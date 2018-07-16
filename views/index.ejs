@@ -1,20 +1,69 @@
-<!doctype html>
-<html>
-<head>
-    <title>Main Page</title>
-    <link href="https://fonts.googleapis.com/css?family=Wendy+One" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
     <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<section class="container clearfix">
-  <section class="role">
-    <h1>Cashier</h1>
-    <a href="/menu"><img src="img/cashier.jpg" alt=""></a>
-  </section>
-  <section class="role">
-    <h1>Barista</h1>
-    <a href="/login"><img src="img/barista.png" alt=""></a>
-  </section>
-</section>
-</body>
+  </head>
+  <body>
+    <header>
+      <h1>Roulette Game</h1>
+    </header>
+    <form>
+      <label for ="name">Name</label>
+      <input type="text" id="name">
+      <input type="text" id="bank">
+      <button id="submit">Submit</button>
+    </form>
+
+      <select id="select">
+        <option value="R1">Black One</option>
+        <option value="B2">Red Two</option>
+        <option value="R3">Black Three</option>
+        <option value="B4">Red Four</option>
+        <option value="R5">Black Five</option>
+        <option value="B6">Red Six</option>
+      </select>
+
+      <button type="button" id="five" name="button">$5</button>
+      <button type="button" id="fifteen" name="button">$15</button>
+      <button type="button" id="twenty" name="button">$20</button>
+
+      <section class="table">
+        <section class="top row">
+          <section class="item one black">
+            <span>1</span>
+          </section>
+          <section class="item two red">
+            <span>2</span>
+          </section>
+          <section class="item three black">
+            <span>3</span>
+          </section>
+        </section>
+
+        <section class="bottom row red">
+          <section class="item four">
+            <span>4</span>
+          </section>
+          <section class="item five black">
+            <span>5</span>
+          </section>
+          <section class="item six red">
+            <span>6</span>
+          </section>
+        </section>
+      </section>
+
+      <section>
+        <h1 id="user">Name</h1>
+        <span id="wallet">0</span>
+      </section>
+
+      <section>
+        <span id="msg"></span>
+      </section>
+
+      <script src="main.js"></script>
+  </body>
 </html>

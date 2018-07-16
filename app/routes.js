@@ -7,21 +7,13 @@ module.exports = function(app, passport, db) {
         res.render('index.ejs');
     });
 
-    app.get('/menu', function(req, res) {
-        res.render('menu.ejs');
-    });
-
-    app.get('/order', function(req, res) {
-        res.render('order.ejs');
-    });
-
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-        db.collection('messages').find().toArray((err, result) => {
+        db.collection('owner').find().toArray((err, result) => {
           if (err) return console.log(err)
           res.render('profile.ejs', {
             user : req.user,
-            messages: result
+            money: result
           })
         })
     });
@@ -34,21 +26,19 @@ module.exports = function(app, passport, db) {
 
 // message board routes ===============================================================
 
-    // This is the collection for customer orders
-    app.post('/cashier', (req, res) => {
-      db.collection('messages').save({type:req.body.type, size: req.body.size, quantity: req.body.quantity, other:req.body.other, name:req.body.name, complete: false }, (err, result) => {
+    app.post('/admin', (req, res) => {
+      db.collection('owner').save({name: req.body.name, cash: req.body.cash}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
-        res.redirect('/menu')
-      })
-    })
+        res.redirect('/profile')
+      });
+    });
 
-    // For barista to check order complete
-    app.put('/barista', (req, res) => {
-      db.collection('messages')
-      .findOneAndUpdate({type:req.body.type, size: req.body.size, quantity: req.body.quantity, other:req.body.other, name:req.body.name, complete: false }, {
-        $set: {
-          complete: true
+    app.put('/loss', (req, res) => {
+      db.collection('items')
+      .findOneAndUpdate({name: req.body.name}, {
+        $inc: {
+          cash: - req.body.cash
         }
       }, {
         sort: {_id: -1},
@@ -59,13 +49,20 @@ module.exports = function(app, passport, db) {
       })
     })
 
-    // Will delete from customerOrder collections
-    app.delete('/remove', (req, res) => {
-      db.collection('messages').findOneAndDelete({name:req.body.name , type:req.body.type}, (err, result) => {
-        if (err) return res.send(500, err)
-        res.send('Message deleted!')
-      })
-    })
+    app.put('/mula', (req, res) => {
+      db.collection('items')
+      .findOneAndUpdate({name: req.body.name}, {
+        $inc: {
+          cash: + req.body.cash
+        }
+      }, {
+        sort: {_id: -1},
+        upsert: true
+      }, (err, result) => {
+        if (err) return res.send(err)
+        res.send(result)
+      });
+    });
 
 // =============================================================================
 // AUTHENTICATE (FIRST LOGIN) ==================================================
